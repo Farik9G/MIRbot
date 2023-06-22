@@ -46,7 +46,7 @@ async def check_photo(message: types.Message):
     image = tf.image.convert_image_dtype(image, tf.float32)
     image = tf.image.resize(image, [180, 180])
     image = np.expand_dims(image, axis=0)
-    result = round_to_nonzero(model.predict(image)[0][0])
+    result = int(model.predict(image)[0][0]*100)
 
     await message.reply(f"<b>Вероятность пневмонии на данном фото == {result}%</b> {emojize(':check_mark_button:')}", parse_mode="HTML")
 
