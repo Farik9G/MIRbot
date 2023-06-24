@@ -48,7 +48,15 @@ async def check_photo(message: types.Message):
     image = np.expand_dims(image, axis=0)
     result = int(model.predict(image)[0][0]*100)
 
-    await message.reply(f"<b>Вероятность пневмонии на данном фото == {result}%</b> {emojize(':check_mark_button:')}", parse_mode="HTML")
+    if result <= 33:
+        await message.reply(f"<b>Вероятность пневмонии на данном фото == {result}%</b> {emojize(':check_mark_button:')}\n"
+                            f"<b>Всё в порядке!</b>", parse_mode="HTML")
+    elif 33 < result <= 66:
+        await message.reply(f"<b>Вероятность пневмонии на данном фото == {result}%</b> {emojize(':warning:')}\n"
+                            f"<b>Стоит обратиться к врачу!</b>", parse_mode="HTML")
+    else:
+        await message.reply(f"<b>Вероятность пневмонии на данном фото == {result}%</b> {emojize(':red_exclamation_mark:')}\n"
+                            f"<b>Стоит обратиться к врачу!</b>", parse_mode="HTML")
 
 if __name__ == '__main__':
     executor.start_polling(dp)
